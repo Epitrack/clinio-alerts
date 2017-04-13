@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+#DIE
+.idea
+.DS_Store
+clinioalerts/
