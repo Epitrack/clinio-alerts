@@ -1,0 +1,17 @@
+redis
+flasgger
+newspaper3k==0.1.9
+rq==0.7.1
+rq-scheduler==0.7.0
+rq-scheduler-dashboard==0.0.2
+Flask==0.12.1
+geocoder==1.22.5
+lxml==3.7.3
+neo4j-driver==1.1.0
+nltk==3.2.2
+py2neo==3.1.2
+requests==2.13.0
+schedule==0.4.2
+html5lib
+flask-socketio
+rq-dashboard
