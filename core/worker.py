@@ -15,7 +15,7 @@ class W(object):
     def get_connection():
         if W.conn == None:
             redis_url = os.getenv('REDISTOGO_URL', 'http://localhost:6379')
-            W.conn = Redis(host='localhost', port=6379)
+            W.conn = Redis(host='redis', port=6379)
         return W.conn
 
 def clear():

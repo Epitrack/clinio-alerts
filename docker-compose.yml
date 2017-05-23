@@ -1,11 +1,27 @@
 web:
   build: .
-  command: bash -c "python core/worker.py | python core/schedulers.py | python app.py | rq-dashboard --redis-host redis --redis-port 6379"
+  command: bash -c "python app.py; rq-dashboard --redis-host redis --redis-port 6379"
   ports:
    - "5000:5000"
    - "9181:9181"
 #  volumes:
 #   - .:/code
+  links:
+   - redis
+   - neo4j
+   - worker
+   - scheduler
+
+scheduler:
+  build: .
+  command: bash -c "python core/schedulers.py"
+  links:
+   - redis
+   - neo4j
+
+worker:
+  build: .
+  command: bash -c "python core/worker.py"
   links:
    - redis
    - neo4j

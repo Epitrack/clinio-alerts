@@ -20,7 +20,7 @@ class RedisNLP(object):
         self.r = self.conn()
 
     def conn(self):
-        r = redis.StrictRedis(host='localhost', port=6379, db=self.db)
+        r = redis.StrictRedis(host='redis', port=6379, db=self.db)
         return r
 
     def get_symptoms(self):
