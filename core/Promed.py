@@ -13,7 +13,7 @@ import json
 
 class Promed(object):
 
-    def __init__(self,key_promed='promed',key_extract='extract', start = "01%2F04%2F2017", today=False, auto_period=True ,sleep=2):
+    def __init__(self,key_promed='promed',key_extract='extract', start = "01%2F01%2F2015", today=False, auto_period=True ,sleep=2):
 
         self.redis = RedisNLP(db=1)
         self.key_promed = key_promed
@@ -68,11 +68,8 @@ class Promed(object):
                         obj['id'] = a['id'].replace("id", "")
                         obj['link'] = 'http://www.promedmail.org/ajax/getPost.php?alert_id=%s' % (obj['id'])
                         obj['week'] = obj['data'].isocalendar()[1]
-                        # try:
                         obj['content'], obj['urls'] = self.scrap_post(self.reader(obj['link'], key='post'))
                         self.redis.get_redis().lpush(self.key_promed, obj)
-                        # except ValueError:
-                        #     print(ValueError, obj['link'])
 
             # first request
             soup = BeautifulSoup(self.reader(self.URL), "html5lib")
@@ -144,9 +141,6 @@ class Promed(object):
                 self.isToday=True
 
         self.end = datetime.date.today().strftime("%m-%d-%Y").replace("-", "%2F")
-
-
-
 
 # promed = Promed(start= (datetime.today() - timedelta(days=100)).strftime("%m-%d-%Y").replace("-","%2F"))
 # promed.scrap()

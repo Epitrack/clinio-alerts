@@ -14,6 +14,8 @@ import functools
 import geocoder
 from core import RedisNLP
 from core.db import Disease, Keyword, Symptom, State, City, Image, Date, Brand, Domain, Alert,Connection
+import dateutil.parser
+import re
 
 class InfoExtractor(object):
 
@@ -79,20 +81,18 @@ class InfoExtractor(object):
         except Exception as e:
             article.download(self.text)
 
-        # while not article.is_downloaded:
-        #     article.download()
-        # if(article.publish_date == None):
-        #     article.download(self.text)
         try:
             article.parse()
             article.nlp()
 
             self.info['article']={}
+            self.text = self.info['article']['text']
             self.info['article']['authors'] = article.authors
             self.info['article']['publish_date'] = article.publish_date
+            if self.info['article']['publish_date']==None:
+                self.info['article']['publish_date'] = self.extractDate(self.text)
             self.info['article']['title'] = article.title
             self.info['article']['text'] = article.text
-            self.text = self.info['article']['text']
             self.info['article']['top_image'] = article.top_image
             self.info['article']['movies'] = article.movies
             self.info['article']['authors'] = article.authors
@@ -101,6 +101,17 @@ class InfoExtractor(object):
         except ArticleException:
             self.info['article']={}
             self.info['article']['publish_date']=None
+
+    def extractDate(self,text):
+
+        p = re.compile(
+            "[0-9]{2}-[0-9]{2}-[0-9]{4} | [0-9]{2}/[0-9]{2}/[0-9]{4} | [0-9]{2}-(?:Jan|Janeiro|Mar|Março|Maio|Jun|Junho|Jul|Julho|Ago|Agosto|Outubro|Out|Dez|Dezembro)-[0-9]{4}")
+        datas = (p.findall(text))
+        print(datas)
+        d=None
+        if len(datas)>0:
+            d = (dateutil.parser.parse(str(datas[0]).strip()))
+        return d
 
     def info_nlp(self):
         logging.info("Reading Article info : "+self.URL)
@@ -346,6 +357,9 @@ class InfoExtractor(object):
                 self.redis.get_redis().lpush(self.key_extract, self.object_date)
         except:
             pass
+
+
+#http://portalsaude.saude.gov.br/index.php/o-ministerio/principal/secretarias/svs/noticias-svs/28348-ministerio-da-saude-declara-fim-da-emergencia-nacional-para-zika-e-microcefalia
 
 # import datetime
 # i = InfoExtractor('http://noticias.r7.com/rio-de-janeiro/rj-mais-duas-mortes-por-febre-amarela-sao-confirmadas-no-estado-04042017', {'data': datetime.datetime(2017, 5, 7, 0, 0)}, b"Domingo, 07 de maio de 2017 Fonte: EBC [03/05/2017] [editado] <a href='http://radioagencianacional.ebc.com.br/geral/audio/2017-05/surto-de-gripe-em-manaus-ja-matou-dez-criancas-menores-de-5-anos'>http://radioagencianacional.ebc.com.br/geral/audio/2017-05/surto-de-gripe-em-manaus-ja-matou-dez-criancas-menores-de-5-anos</a>  Surto de gripe em Manaus j\xc3\xa1 matou 10 crian\xc3\xa7as menores de 5 anos ---------------------------------------------------------------------------------------- Manaus vive um surto de gripe e as complica\xc3\xa7\xc3\xb5es da doen\xc3\xa7a podem ser a causa das mortes de 10 crian\xc3\xa7as menores de 5 anos de idade, registradas em abril [2017], no Hospital Pronto Socorro Delphina Rinaldi Abdel Aziz.  Os pacientes apresentaram sintomas da S\xc3\xadndrome Respirat\xc3\xb3ria Aguda Grave (SRAG), como falta de ar, febre, coriza e tosse. Segundo o diretor presidente da Funda\xc3\xa7\xc3\xa3o de Vigil\xc3\xa2ncia Sanit\xc3\xa1ria (FVS), Bernardino Albuquerque, os casos est\xc3\xa3o sendo investigados e exames preliminares j\xc3\xa1 identificaram dois tipos de v\xc3\xadrus. 'Infelizmente dessas crian\xc3\xa7as que foram a \xc3\xb3bito n\xc3\xa3o foi coletado material. Foi coletado material de crian\xc3\xa7as que tamb\xc3\xa9m estavam internadas, em tratamento, naquele momento e identificamos dois tipos de v\xc3\xadrus: principalmente os v\xc3\xadrus Sincicial Respirat\xc3\xb3rio e o Influenza B', explicou Bernardino Albuquerque.  Ap\xc3\xb3s as mortes, medidas preventivas foram refor\xc3\xa7adas nas unidades de sa\xc3\xbade de Manaus, como explica o diretor presidente da funda\xc3\xa7\xc3\xa3o. 'N\xc3\xb3s tivemos um foco inicial de atua\xc3\xa7\xc3\xa3o dentro do Hospital Delphina, no que diz respeito ao alerta aos profissionais, no manejo desses pacientes, no sentido de colocar esses pacientes em um ambiente mais restrito e isolado, a quest\xc3\xa3o dos cuidados de lavar as m\xc3\xa3os durante a manipula\xc3\xa7\xc3\xa3o. Por estar envolvido o v\xc3\xadrus da Influenza B, est\xc3\xa1 sendo ofertada a medica\xc3\xa7\xc3\xa3o antiviral Tamiflu.'  Al\xc3\xa9m disso, toda a rede hospitalar pedi\xc3\xa1trica da capital amazonense foi orientada a dar atendimento priorit\xc3\xa1rio a pacientes com os sintomas da S\xc3\xadndrome Respirat\xc3\xb3ria Aguda Grave e a colher material para que a circula\xc3\xa7\xc3\xa3o dos v\xc3\xadrus seja monitorada.  Atualmente, de acordo com o diretor presidente da Funda\xc3\xa7\xc3\xa3o de Vigil\xc3\xa2ncia Sanit\xc3\xa1ria, 15 pessoas, entre adultos e crian\xc3\xa7as, est\xc3\xa3o internadas em unidades de sa\xc3\xbade da cidade, com suspeita de SRAG.  No hospital Delphina, 5 crian\xc3\xa7as permanecem em tratamento e o quadro de sa\xc3\xbade delas ainda inspira cuidados. Bernardino Albuquerque d\xc3\xa1 algumas orienta\xc3\xa7\xc3\xb5es \xc3\xa0 popula\xc3\xa7\xc3\xa3o que ajudam a prevenir a gripe. 'N\xc3\xb3s temos uma arma que \xc3\xa9 bastante efetiva que \xc3\xa9 a vacina. Estamos estimulando para que a popula\xc3\xa7\xc3\xa3o busque as unidades de sa\xc3\xbade para que vacine seus filhos. E como medidas preventivas individuais, evitar a aglomera\xc3\xa7\xc3\xa3o de pessoas neste momento, principalmente de crian\xc3\xa7as, a quest\xc3\xa3o da higiene pessoal, de lavar as m\xc3\xa3os que \xc3\xa9 extremamente importante', explicou.  -- Comunicado por: ProMED-Port <a href='http://promedmail.org/pt'>http://promedmail.org/pt</a></p><p><h2>Veja tamb\xc3\xa9m</h2>\nProMED-PORT ----------- 2017: ano 20 do ProMED-PORT  Visite nosso site: <a href='http://www.promedmail.org/pt'>http://www.promedmail.org/pt</a>  Envie not\xc3\xadcias, informa\xc3\xa7\xc3\xb5es e coment\xc3\xa1rios: <a href='http://www.promedmail.org/submitinfo/'>http://www.promedmail.org/submitinfo/</a>  Inscreva um colega no ProMED-PORT: <a href='http://ww4.isid.org/promedmail/subscribe.php'>http://ww4.isid.org/promedmail/subscribe.php</a>  Fa\xc3\xa7a sua doa\xc3\xa7\xc3\xa3o ao ProMED: <a href='http://isid.org/donate/PMM_donate.shtml'>http://isid.org/donate/PMM_donate.shtml</a> .................................................RNA</p>")

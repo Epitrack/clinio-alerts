@@ -8,11 +8,12 @@ from rq import Queue
 from rq.job import Job
 import json
 from datetime import datetime
-# import rq_dashboard
+import rq_dashboard
 
 app = Flask(__name__)
-# app.config.from_object(rq_dashboard.default_settings)
-# app.register_blueprint(rq_dashboard.blueprint, url_prefix="/rq")
+app.config.from_object(rq_dashboard.default_settings)
+app.register_blueprint(rq_dashboard.blueprint, url_prefix="/rq")
+
 c = worker.W.get_connection()
 q = Queue(connection=c)
 
