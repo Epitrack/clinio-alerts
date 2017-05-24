@@ -1,6 +1,6 @@
 web:
   build: .
-  command: bash -c "python app.py; rq-dashboard --redis-host redis --redis-port 6379"
+  command: bash -c "python app.py"
   ports:
    - "5000:5000"
    - "9181:9181"
@@ -11,6 +11,13 @@ web:
    - neo4j
    - worker
    - scheduler
+   - rqdashboard
+
+rqdashboard:
+  build: .
+  command: bash -c "rq-dashboard --redis-host redis --redis-port 6379"
+  links:
+   - redis
 
 scheduler:
   build: .
