@@ -103,14 +103,17 @@ class InfoExtractor(object):
             self.info['article']['publish_date']=None
 
     def extractDate(self,text):
-
         p = re.compile(
             "[0-9]{2}-[0-9]{2}-[0-9]{4} | [0-9]{2}/[0-9]{2}/[0-9]{4} | [0-9]{2}-(?:Jan|Janeiro|Mar|Março|Maio|Jun|Junho|Jul|Julho|Ago|Agosto|Outubro|Out|Dez|Dezembro)-[0-9]{4}")
         datas = (p.findall(text))
         print(datas)
-        d=None
-        if len(datas)>0:
-            d = (dateutil.parser.parse(str(datas[0]).strip()))
+        d=self.object_date
+        try:
+            if len(datas)>0:
+                d = (dateutil.parser.parse(str(datas[0]).strip()))
+        except:
+            pass
+        
         return d
 
     def info_nlp(self):
