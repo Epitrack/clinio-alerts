@@ -86,13 +86,13 @@ class InfoExtractor(object):
             article.nlp()
 
             self.info['article']={}
-            self.text = self.info['article']['text']
+            self.text = article.text
             self.info['article']['authors'] = article.authors
             self.info['article']['publish_date'] = article.publish_date
             if self.info['article']['publish_date']==None:
                 self.info['article']['publish_date'] = self.extractDate(self.text)
             self.info['article']['title'] = article.title
-            self.info['article']['text'] = article.text
+            self.info['article']['text'] = self.text
             self.info['article']['top_image'] = article.top_image
             self.info['article']['movies'] = article.movies
             self.info['article']['authors'] = article.authors
@@ -113,7 +113,7 @@ class InfoExtractor(object):
                 d = (dateutil.parser.parse(str(datas[0]).strip()))
         except:
             pass
-        
+
         return d
 
     def info_nlp(self):
