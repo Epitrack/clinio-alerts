@@ -13,7 +13,7 @@ import logging
 import functools
 import geocoder
 from core import RedisNLP
-from core.db import Disease, Keyword, Symptom, State, City, Image, Date, Brand, Domain, Alert,Connection
+from core.db import Disease, Keyword, Symptom, State, City, Image, Date, Brand, Domain, Alert,Connection,Concordance
 import dateutil.parser
 import re
 
@@ -244,7 +244,7 @@ class InfoExtractor(object):
                     for e in siglas_cidades[_e]:
                         matching = [s for s in _sentences if s.find(e)>-1 and e not in EXCLUDE]
                         if len(matching)>0:
-                            _cidades.append({"nome": e, "latlng": self.getLatLng(e), "refs": []})
+                            _cidades.append({"nome": e, "latlng": self.getLatLng(e), "refs": matching})
 
                     if len(_cidades)>0:
                         estados_cidades_in_text[estados_siglas[_e]] = {
@@ -268,10 +268,8 @@ class InfoExtractor(object):
                 "refs": estados_encontrados[UF],
                 "cidades": cidades
             }
-        # print("estados_cidades_in_text ",len(estados_cidades_in_text))
         if len(estados_cidades_in_text) >= 3:
             ordered_estados_cidades_in_text=sorted(estados_cidades_in_text, key= lambda x: len(estados_cidades_in_text[x]['cidades']), reverse=True)
-            # print(ordered_estados_cidades_in_text)
             aux = {}
             aux[ordered_estados_cidades_in_text[0]] = estados_cidades_in_text[ordered_estados_cidades_in_text[0]]
             estados_cidades_in_text=aux
@@ -286,18 +284,27 @@ class InfoExtractor(object):
             pass
         return latlng
 
-    def concordance(self,word, sentences, context=30):
+    def concordance(word, sentences, context=100):
+        out = []
         for sent in sentences:
-            print(sent)
             if word in sent:
+                context = len(sent)
                 pos = sent.index(word)
                 left = ''.join(sent[:pos])
-                right = ''.join(sent[pos+1:100])
-                print('%*s %s %-*s' % (context, left[-context:], word, context, right[:context]))
+                right = ''.join(sent[pos + len(word):])
+                s = str('%*s %s %-*s' % (context, left[-context:], str(word).strip(), context, right[:context])).strip()
+                out.append(s)
+        return out
+
+    def derivation(self,word):
+        stemmer = nltk.stem.RSLPStemmer()
+        return stemmer.stem(word)
 
     def persist(self):
         try:
             if self.info['article']['publish_date'] != None and not self.invalid:
+
+                SENTENCES = self.sentences(self.text)
 
                 brand = Brand()
                 brand.name = self.info['domain']['brand']
@@ -326,24 +333,34 @@ class InfoExtractor(object):
                 for m in most_commom_words:
                     keyword = Keyword()
                     keyword.name = str(m[0]).lower()
+                    keyword.derivation = self.derivation(keyword.name)
                     alert.keywords.add(keyword,{"qtd":m[1]})
 
                 diseases = self.info['nlp']['disease']
                 for d in diseases:
                     di = Disease()
                     di.name = d
+                    for _c in self.concordance(d,SENTENCES):
+                        _concord = Concordance()
+                        _concord.phrase = _c
+                        di.concordance.add(_concord)
+
                     alert.diseases.add(di)
 
                 symptoms = self.info['nlp']['symptoms']
                 for s in symptoms:
                     sy = Symptom()
                     sy.name = s
+
+                    for _c in self.concordance(s,SENTENCES):
+                        _concord = Concordance()
+                        _concord.phrase = _c
+                        sy.concordance.add(_concord)
+
                     alert.symptoms.add(sy)
 
                 state_cities = self.info['nlp']['state_cities']
-                # print(state_cities)
                 if len(state_cities)==0 and self.lang=="pt":
-                    # print("NAO EH ALERTA ")
                     self.redis.get_redis().lpush("no_alerts", self.info)
                 else:
                     for sc in state_cities:
@@ -353,14 +370,16 @@ class InfoExtractor(object):
                             city = City()
                             city.name = c['nome']
                             city.latlng = c['latlng']
+                            for _c in c['refs']:
+                                _concord = Concordance()
+                                _concord.phrase = _c
+                                city.concordance.add(_concord)
                             e.cities.add(city)
                         alert.states.add(e)
 
                 print('''
                 ####################################################################################################
-
                 SALVANDO ALERTA DE SAÚDE... %s
-
                 ####################################################################################################
                 '''%(alert.title))
                 try:

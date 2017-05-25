@@ -1,3 +1,5 @@
 .DS*
 .idea*
 data/databases
+*.pyc*
+/__pycache__

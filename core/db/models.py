@@ -36,10 +36,12 @@ class Disease(GraphObject):
 
     disease_alert = RelatedTo(Alert)
     symptoms = RelatedFrom("Symptom", "IN_SYMPTOM")
+    concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
 
 class Keyword(GraphObject):
     __primarykey__ = "name"
     name = Property()
+    derivation = Property()
 
     keyword_alert = RelatedTo(Alert)
 
@@ -49,6 +51,15 @@ class Symptom(GraphObject):
 
     symptom_alert = RelatedTo(Alert)
     symptom_disease = RelatedTo(Disease)
+    concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
+
+
+class Concordance(GraphObject):
+    phrase=Property()
+
+    symptom_concordance = RelatedTo(Symptom)
+    disease_concordance = RelatedTo(Disease)
+    city_concordance = RelatedTo(City)
 
 class State(GraphObject):
     __primarykey__ = "name"
@@ -64,7 +75,7 @@ class City(GraphObject):
 
     city_alert = RelatedTo(Alert)
     city_state = RelatedTo(State)
-
+    concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
 
 class Image(GraphObject):
     __primarykey__ = "url"
