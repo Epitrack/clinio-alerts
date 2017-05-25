@@ -8,12 +8,15 @@ import os
 from core import worker
 import time
 import threading
+from core import RedisNLP
+import redis
 
 class Schedulers(threading.Thread):
 
     def __init__(self):
+        print("Instance")
         threading.Thread.__init__(self)
-        self.q = Queue(connection=worker.W.get_connection())
+        self.q = Queue(connection=RedisNLP.conn(db_=0))
         self.ONE_HOUR = 18000
 
     def run(self):

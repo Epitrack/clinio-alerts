@@ -2,9 +2,8 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-__all__ = ["InfoExtractor","Promed","RedisNLP","W","Schedulers"]
+__all__ = ["InfoExtractor","Promed","RedisNLP","Schedulers"]
 from .RedisNLP import RedisNLP
 from .Promed import Promed
 from .InfoExtractor import InfoExtractor
-from .worker import W
 from .schedulers import Schedulers

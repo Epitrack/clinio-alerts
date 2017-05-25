@@ -109,6 +109,4 @@ class Domain(GraphObject):
     domain_alert = RelatedTo(Alert)
     domain_brand = RelatedTo(Brand)
 
-
-
-
+# print(Connection.get_connection().run("MATCH (a) RETURN a LIMIT 4").data())

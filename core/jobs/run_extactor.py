@@ -3,7 +3,6 @@ import sys,os
 sys.path.append(os.getcwd().replace("/core",""))
 from core.jobs import job_info_extractor
 from rq import Queue
-from core import worker
 from core import RedisNLP
 import json
 import ast
@@ -12,7 +11,7 @@ import datetime
 import time
 
 def run_extactor():
-    q = Queue(connection=worker.W.get_connection())
+    q = Queue(connection=RedisNLP.conn(db_=0))
     key_promed = 'promed'
     redis = RedisNLP(db=1)
     for r in range(0,redis.get_redis().llen(key_promed)):
@@ -24,3 +23,5 @@ def run_extactor():
         except ValueError:
             print(ValueError)
     return True
+
+# run_extactor()

@@ -107,12 +107,12 @@ class InfoExtractor(object):
             "[0-9]{2}-[0-9]{2}-[0-9]{4} | [0-9]{2}/[0-9]{2}/[0-9]{4} | [0-9]{2}-(?:Jan|Janeiro|Mar|Março|Maio|Jun|Junho|Jul|Julho|Ago|Agosto|Outubro|Out|Dez|Dezembro)-[0-9]{4}")
         datas = (p.findall(text))
         print(datas)
-        d=self.object_date
+        d=self.object_date['data']
         try:
             if len(datas)>0:
                 d = (dateutil.parser.parse(str(datas[0]).strip()))
-        except:
-            pass
+        except Exception as err:
+            print(err)
 
         return d
 
@@ -300,7 +300,7 @@ class InfoExtractor(object):
             pass
         return latlng
 
-    def concordance(word, sentences, context=100):
+    def concordance(self,word, sentences, context=100):
         out = []
         for sent in sentences:
             if word in sent:
@@ -318,7 +318,7 @@ class InfoExtractor(object):
 
     def persist(self):
         try:
-            if self.info['article']['publish_date'] != None and not self.invalid:
+            if self.info['article']['publish_date'] != None and self.has_run and not self.invalid:
 
                 SENTENCES = self.sentences(self.text)
 
@@ -353,10 +353,11 @@ class InfoExtractor(object):
                     alert.keywords.add(keyword,{"qtd":m[1]})
 
                 diseases = self.info['nlp']['disease']
-                for d in diseases:
+                for disease_ in diseases:
                     di = Disease()
-                    di.name = d
-                    for _c in self.concordance(d,SENTENCES):
+                    di.name = disease_
+                    print(disease_)
+                    for _c in self.concordance(di.name,SENTENCES):
                         _concord = Concordance()
                         _concord.phrase = _c
                         di.concordance.add(_concord)
@@ -400,11 +401,11 @@ class InfoExtractor(object):
                 '''%(alert.title))
                 try:
                     Connection.get_connection().push(alert)
-                    self.redis.get_redis().lpush(self.key_extract, self.object_date)
+                    # self.redis.get_redis().lpush(self.key_extract, self.object_date)
                 except ValueError as e:
                     print("ERRO : %s"%(str(e)))
-        except:
-            pass
+        except ValueError as err:
+            print(str(err))
 
 
 #http://portalsaude.saude.gov.br/index.php/o-ministerio/principal/secretarias/svs/noticias-svs/28348-ministerio-da-saude-declara-fim-da-emergencia-nacional-para-zika-e-microcefalia

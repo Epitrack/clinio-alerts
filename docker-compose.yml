@@ -48,3 +48,4 @@ neo4j:
   environment:
     - NEO4J_HEAP_MEMORY=16G
     - NEO4J_CACHE_MEMORY=4G
+    - NEO4J_AUTH=neo4j/epitrack

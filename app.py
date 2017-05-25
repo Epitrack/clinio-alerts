@@ -3,7 +3,7 @@ import sys,os
 print('\nPython %s on %s\n' % (sys.version, sys.platform))
 from flask import Flask, jsonify, request
 import os
-from core import worker
+from core import RedisNLP
 from rq import Queue
 from rq.job import Job
 import json
@@ -14,8 +14,7 @@ app = Flask(__name__)
 app.config.from_object(rq_dashboard.default_settings)
 app.register_blueprint(rq_dashboard.blueprint, url_prefix="/rq")
 
-c = worker.W.get_connection()
-q = Queue(connection=c)
+q = Queue(connection=RedisNLP.conn())
 
 @app.route('/')
 def index():

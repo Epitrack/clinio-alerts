@@ -7,23 +7,15 @@ from redis import Redis
 from rq import Worker, Queue, Connection
 listen = ['default']
 import time
-
-class W(object):
-    conn=None
-    @staticmethod
-    def get_connection():
-        if W.conn == None:
-            W.conn = Redis(host='redis', port=6379)
-        return W.conn
+from core import RedisNLP
 
 def clear():
-    qfail = Queue(connection=W.get_connection())
+    qfail = Queue(connection=RedisNLP.conn(db_=0))
     qfail.empty()
     print(qfail.count)
 
 if __name__ == '__main__':
-    time.sleep(1)
-    with Connection(W.get_connection()):
+    with Connection(RedisNLP.conn(db_=0)):
         print("Starting worker...")
         worker = Worker(list(map(Queue, listen)))
         worker.work()

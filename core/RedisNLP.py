@@ -7,6 +7,7 @@ import os
 import ast
 
 class RedisNLP(object):
+    _conn = {}
 
     def __init__(self,key_diseases='diseases',key_state_cities='state_cities',key_symptoms='symptoms',
                  file_symptoms='/data/sintomas.csv', file_state_cities='/data/estados_cidades.json', file_diseases='/data/doencas.txt',db=0):
@@ -18,11 +19,15 @@ class RedisNLP(object):
         self.key_symptoms=key_symptoms
         self.key_state_cities=key_state_cities
         self.db=db
-        self.r = self.conn()
+        self.r = RedisNLP.conn(db)
 
-    def conn(self):
-        r = redis.StrictRedis(host='redis', port=6379, db=self.db)
-        return r
+    @staticmethod
+    def conn(db_=0):
+        try:
+            c = RedisNLP._conn[db_]
+        except:
+            RedisNLP._conn[db_]=redis.StrictRedis(host='redis', port=6379, db=db_)
+        return RedisNLP._conn[db_]
 
     def get_symptoms(self):
         symptoms = self.get_(self.key_symptoms)

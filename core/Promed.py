@@ -13,7 +13,7 @@ import json
 
 class Promed(object):
 
-    def __init__(self,key_promed='promed',key_extract='extract', start = "01%2F01%2F2015", today=False, auto_period=True ,sleep=2):
+    def __init__(self,key_promed='promed',key_extract='extract', start = "01%2F01%2F2016", today=False, auto_period=True ,sleep=2):
 
         self.redis = RedisNLP(db=1)
         self.key_promed = key_promed
@@ -141,3 +141,6 @@ class Promed(object):
                 self.isToday=True
 
         self.end = datetime.date.today().strftime("%m-%d-%Y").replace("-", "%2F")
+
+# promed = Promed(start= (datetime.date.today() - timedelta(days=10)).strftime("%m-%d-%Y").replace("-","%2F"))
+# promed.scrap()
