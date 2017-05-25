@@ -68,7 +68,7 @@ class City(GraphObject):
     city_alert = RelatedTo(Alert)
     city_state = RelatedTo(State)
     concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
-    
+
 class Concordance(GraphObject):
     phrase=Property()
 
