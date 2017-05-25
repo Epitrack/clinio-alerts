@@ -5,18 +5,9 @@ from core import InfoExtractor
 import datetime
 
 def start_extractor(link,date,text_):
-    a = """
-    #######
-    #       #    # ##### #####    ##    ####  #####  ####  #####
-    #        #  #    #   #    #  #  #  #    #   #   #    # #    #
-    #####     ##     #   #    # #    # #        #   #    # #    #
-    #         ##     #   #####  ###### #        #   #    # #####
-    #        #  #    #   #   #  #    # #    #   #   #    # #   #
-    ####### #    #   #   #    # #    #  ####    #    ####  #    #
-    """
-    print(a)
+    print("\nRun extractor :\n",date['data'])
     i = InfoExtractor(link,date,text=text_)
     i.run()
-    i.print()
+    i.print_soft()
     i.persist()
     return

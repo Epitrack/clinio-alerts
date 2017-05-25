@@ -161,6 +161,22 @@ class InfoExtractor(object):
         except:
             print("Invalid URL ",self.URL)
 
+    def print_soft(self):
+        try:
+            if self.has_run and not self.invalid:
+                print("\n======================================================")
+                print("Extract URL: ",self.URL)
+                print("NLP INFORMATIONS:\n")
+                print("Disease: ", self.info['nlp']['disease'])
+                print("Most Commom Words: ", self.info['nlp']['most_commom_words'])
+                print("Symptoms: ", self.info['nlp']['symptoms'])
+                print("State/Cities: ", self.info['nlp']['state_cities'])
+                print("======================================================\n")
+            else:
+                print("Please, invoke run() function first")
+        except:
+            print("Invalid URL ",self.URL)
+
     def getInfos(self):
         return self.info
 

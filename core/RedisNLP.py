@@ -5,6 +5,7 @@ import json
 import csv
 import os
 import ast
+
 class RedisNLP(object):
 
     def __init__(self,key_diseases='diseases',key_state_cities='state_cities',key_symptoms='symptoms',
@@ -65,8 +66,6 @@ class RedisNLP(object):
             o = eval(ast.literal_eval(json.dumps(str(
                 estado_cidade.decode('utf-8').replace("'", "||").replace("\"", "'").replace("||","\"")))))
             estado_cidade = o
-            # print("4 ",estado_cidade)
-            # print("5 ", type(estado_cidade))
             return estado_cidade
         else:
             o = eval(ast.literal_eval(json.dumps(str(
@@ -93,16 +92,3 @@ class RedisNLP(object):
 
     def get_redis(self):
         return self.r
-
-# r = RedisNLP()
-# r.get_redis().delete('state_cities')
-# print("get_state_cities")
-# print(r.get_state_cities())
-# print(type(r.get_state_cities()))
-# print(r.get_state_cities()['estados'])
-# print("get_diseases")
-# print(r.get_diseases())
-# print("get_symptoms")
-# print(r.get_symptoms())
-
-

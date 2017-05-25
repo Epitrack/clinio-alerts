@@ -3,11 +3,9 @@ import sys,os
 sys.path.append(os.getcwd().replace("/core",""))
 from core import Promed
 import datetime
+
 def start_promed():
-    print("""
-        Start PROMED SCRAP...
-    """)
+    print("\nStart PROMED SCRAP...\n")
     promed = Promed()
     promed.scrap()
-    # print("Start promed ",datetime.date)
     return

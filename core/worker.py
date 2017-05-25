@@ -10,11 +10,9 @@ import time
 
 class W(object):
     conn=None
-
     @staticmethod
     def get_connection():
         if W.conn == None:
-            redis_url = os.getenv('REDISTOGO_URL', 'http://localhost:6379')
             W.conn = Redis(host='redis', port=6379)
         return W.conn
 
@@ -23,13 +21,9 @@ def clear():
     qfail.empty()
     print(qfail.count)
 
-
 if __name__ == '__main__':
-    # clear()
-    time.sleep(3)
+    time.sleep(1)
     with Connection(W.get_connection()):
-
         print("Starting worker...")
-
         worker = Worker(list(map(Queue, listen)))
         worker.work()

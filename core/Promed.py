@@ -141,14 +141,3 @@ class Promed(object):
                 self.isToday=True
 
         self.end = datetime.date.today().strftime("%m-%d-%Y").replace("-", "%2F")
-
-# promed = Promed(start= (datetime.today() - timedelta(days=100)).strftime("%m-%d-%Y").replace("-","%2F"))
-# promed.scrap()
-# d = "02-05-2017"
-# print(d)
-# print(datetime.strptime(d, "%d-%m-%Y"))
-# print((datetime.strptime(d, "%d-%m-%Y") - timedelta(days=1)))
-# print((datetime.strptime(d, "%d-%m-%Y") - timedelta(days=1)).strftime("%d-%m-%Y"))
-# d=("﻿15 Apr 2017").strip('\ufeff')
-# print(d)
-# print(datetime.strptime(d, "%d %b %Y").date().day)

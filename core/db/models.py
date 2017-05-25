@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from py2neo import Graph, Node, Relationship
+from py2neo import Graph
 from py2neo.ogm import *
 
 

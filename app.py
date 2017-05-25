@@ -19,7 +19,6 @@ q = Queue(connection=c)
 
 @app.route('/')
 def index():
-    # redis.incr('hits')
     return "Status: {}".format(datetime.utcnow().strftime("%d-%m-%Y %H:%M:%S"))
 
 @app.route('/jobs/<string:id>')
@@ -71,10 +70,9 @@ def drop_jobs(key):
 
 @app.route('/jobs/countall/<key>')
 def count_jobs(key):
-    if key == "sandman":
+    if key == "sand":
         return "Corrent jobs: {}".format(q.count)
     return None
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
