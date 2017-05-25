@@ -10,6 +10,9 @@ ENV PYTHONPATH $PYTHONPATH:/code
 # INSTALL NLTK
 RUN pip install -U nltk
 ENV CORPORA punkt
+ENV NEO4J_URL neo4j
+ENV REDIS_URL redis
+
 # INSTALL NLTK DEPENDENCES
 CMD python -m nltk.downloader punkt;
 RUN python -m nltk.downloader brown

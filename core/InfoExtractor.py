@@ -355,9 +355,20 @@ class InfoExtractor(object):
                             city.latlng = c['latlng']
                             e.cities.add(city)
                         alert.states.add(e)
+
+                print('''
+                ####################################################################################################
+
+                SALVANDO ALERTA DE SAÚDE... %s
+
+                ####################################################################################################
+                '''%(alert.title))
+                try:
                     _c = Connection()
                     _c.get_connection().push(alert)
-                self.redis.get_redis().lpush(self.key_extract, self.object_date)
+                    self.redis.get_redis().lpush(self.key_extract, self.object_date)
+                except ValueError as e:
+                    print("ERRO : %s"%(str(e)))
         except:
             pass
 

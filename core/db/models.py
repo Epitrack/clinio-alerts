@@ -6,7 +6,7 @@ from py2neo.ogm import *
 class Connection():
 
     def __init__(self):
-        self.HOSTNAME = "http://localhost:7474/db/data"
+        self.HOSTNAME = "http://neo4j:7474/db/data"
         self.USER = "neo4j"
         self.PASS = "epitrack"
         self.graph = Graph(self.HOSTNAME, user=self.USER, password=self.PASS)
