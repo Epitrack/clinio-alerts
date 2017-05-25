@@ -383,8 +383,7 @@ class InfoExtractor(object):
                 ####################################################################################################
                 '''%(alert.title))
                 try:
-                    _c = Connection()
-                    _c.get_connection().push(alert)
+                    Connection.get_connection().push(alert)
                     self.redis.get_redis().lpush(self.key_extract, self.object_date)
                 except ValueError as e:
                     print("ERRO : %s"%(str(e)))

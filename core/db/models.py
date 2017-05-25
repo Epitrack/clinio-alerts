@@ -3,16 +3,17 @@ from py2neo import Graph, Node, Relationship
 from py2neo.ogm import *
 
 
-class Connection():
+class Connection(object):
+    graph=None
 
-    def __init__(self):
-        self.HOSTNAME = "http://neo4j:7474/db/data"
-        self.USER = "neo4j"
-        self.PASS = "epitrack"
-        self.graph = Graph(self.HOSTNAME, user=self.USER, password=self.PASS)
-
+    @staticmethod
     def get_connection(self):
-        return self.graph
+        if Connection.graph==None:
+            HOSTNAME = "http://neo4j:7474/db/data"
+            USER = "neo4j"
+            PASS = "epitrack"
+            Connection.graph = Graph(HOSTNAME, user=USER, password=PASS)
+        return Connection.graph
 
 class Alert(GraphObject):
     __primarykey__ = "title"
