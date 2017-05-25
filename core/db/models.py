@@ -3,11 +3,11 @@ from py2neo import Graph
 from py2neo.ogm import *
 
 
-class Connection(object):
+class Connection():
     graph=None
 
     @staticmethod
-    def get_connection(self):
+    def get_connection():
         if Connection.graph==None:
             HOSTNAME = "http://neo4j:7474/db/data"
             USER = "neo4j"
@@ -76,8 +76,6 @@ class Concordance(GraphObject):
     symptom_concordance = RelatedTo(Symptom)
     disease_concordance = RelatedTo(Disease)
     city_concordance = RelatedTo(City)
-
-
 
 class Image(GraphObject):
     __primarykey__ = "url"
