@@ -66,6 +66,8 @@ class InfoExtractor(object):
             self.info_article()
             self.info_nlp()
             self.has_run=True
+            # if detect(self.info['article']['title'])!='pt':
+            #     self.invalid=True
         else:
             self.invalid=True
         return

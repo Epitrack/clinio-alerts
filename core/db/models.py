@@ -71,6 +71,7 @@ class City(GraphObject):
     concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
 
 class Concordance(GraphObject):
+    __primarykey__ = "phrase"
     phrase=Property()
 
     symptom_concordance = RelatedTo(Symptom)
