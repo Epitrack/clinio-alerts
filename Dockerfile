@@ -25,3 +25,5 @@ RUN python -m nltk.downloader words
 RUN python -m nltk.downloader stopwords
 RUN python -m nltk.downloader names
 RUN python -m nltk.downloader wordnet
+RUN python -m nltk.downloader averaged_perceptron_tagger
+RUN python -m nltk.downloader popular
