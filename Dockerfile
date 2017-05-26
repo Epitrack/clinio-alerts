@@ -15,6 +15,7 @@ ENV REDIS_URL redis
 
 # INSTALL NLTK DEPENDENCES
 CMD python -m nltk.downloader all;
+CMD python -m nltk.downloader all-corpora;
 #RUN python -m nltk.downloader brown
 #RUN python -m nltk.downloader punkt
 #RUN python -m nltk.downloader treebank
