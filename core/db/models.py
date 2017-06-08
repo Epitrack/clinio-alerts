@@ -7,82 +7,69 @@ class Connection():
     graph=None
 
     @staticmethod
-    def get_connection():
+    def get_connection(HOSTNAME="http://neo4j:7474/db/data",USER = "neo4j",PASS = "epitrack"):
         if Connection.graph==None:
-            HOSTNAME = "http://neo4j:7474/db/data"
-            USER = "neo4j"
-            PASS = "epitrack"
             Connection.graph = Graph(HOSTNAME, user=USER, password=PASS)
         return Connection.graph
 
-class Alert(GraphObject):
-    __primarykey__ = "title"
-    title = Property()
-    text = Property()
-    summary = Property()
 
-    states = RelatedFrom("State", "IN_STATE")
-    cities = RelatedFrom("City", "IN_CITY")
-    symptoms = RelatedFrom("Symptom", "HAS_SYMPTOM")
-    diseases = RelatedFrom("Disease", "HAS_DISEASE")
-    domains = RelatedFrom("Domain", "IN_DOMAIN")
-    brands = RelatedFrom("Brand", "IN_BRAND")
-    keywords = RelatedFrom("Keyword", "HAS_KEYWORD")
-    images = RelatedFrom("Image", "TOP_IMAGE")
-    dates = RelatedFrom("Date", "IN_DATE")
+class Concordance(GraphObject):
+    __primarykey__ = "phrase"
+    phrase=Property()
 
-class Disease(GraphObject):
-    __primarykey__ = "name"
-    name = Property()
-
-    disease_alert = RelatedTo(Alert)
-    symptoms = RelatedFrom("Symptom", "IN_SYMPTOM")
-    concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
-
-class Keyword(GraphObject):
-    __primarykey__ = "name"
-    name = Property()
-    derivation = Property()
-
-    keyword_alert = RelatedTo(Alert)
+    disease = RelatedFrom("Disease", "HAS_CONCORDANCE")
+    symptom = RelatedFrom("Symptom", "HAS_CONCORDANCE")
+    city = RelatedFrom("City", "HAS_CONCORDANCE")
 
 class Symptom(GraphObject):
     __primarykey__ = "name"
     name = Property()
 
-    symptom_alert = RelatedTo(Alert)
-    symptom_disease = RelatedTo(Disease)
-    concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
+    alert = RelatedFrom("Alert", "HAS_SYMPTOM")
+    disease = RelatedFrom("Disease", "IN_SYMPTOM")
 
-class State(GraphObject):
-    __primarykey__ = "name"
-    name = Property()
+    concordances = RelatedTo(Concordance)
 
-    cities = RelatedFrom("City", "IN_CITY")
-    state_alert = RelatedTo(Alert)
 
 class City(GraphObject):
     __primarykey__ = "name"
     name = Property()
     latlng = Property()
 
-    city_alert = RelatedTo(Alert)
-    city_state = RelatedTo(State)
-    concordance = RelatedFrom("Concordance", "HAS_CONCORDANCE")
+    alert = RelatedFrom("Alert", "IN_STATE")
+    state = RelatedFrom("State", "IN_CITY")
 
-class Concordance(GraphObject):
-    __primarykey__ = "phrase"
-    phrase=Property()
+    concordances = RelatedTo(Concordance)
 
-    symptom_concordance = RelatedTo(Symptom)
-    disease_concordance = RelatedTo(Disease)
-    city_concordance = RelatedTo(City)
+class Disease(GraphObject):
+    __primarykey__ = "name"
+    name = Property()
+
+    alert = RelatedFrom("Alert", "HAS_DISEASE")
+
+    symptoms = RelatedTo(Symptom)
+    concordances = RelatedTo(Concordance)
+
+class Keyword(GraphObject):
+    __primarykey__ = "name"
+    name = Property()
+    derivation = Property()
+
+    alert = RelatedFrom("Alert", "HAS_KEYWORD")
+
+class State(GraphObject):
+    __primarykey__ = "name"
+    name = Property()
+
+    alert = RelatedFrom("Alert", "IN_STATE")
+
+    cities = RelatedTo(City)
 
 class Image(GraphObject):
     __primarykey__ = "url"
     url = Property()
 
-    image_alert = RelatedTo(Alert)
+    alert = RelatedFrom("Alert", "TOP_IMAGE")
 
 class Date(GraphObject):
     __primarykey__ = "date"
@@ -92,14 +79,14 @@ class Date(GraphObject):
     diames = Property()
     ano = Property()
 
-    date_alert = RelatedTo(Alert)
+    alert = RelatedFrom("Alert", "IN_DATE")
 
 class Brand(GraphObject):
     __primarykey__ = "name"
     name = Property()
 
-    domains = RelatedFrom("Domain", "IN_DOMAIN")
-    brand_alert = RelatedTo(Alert)
+    domain = RelatedFrom("Domain", "IN_DOMAIN")
+    alert = RelatedFrom("Alert", "IN_BRAND")
 
 class Domain(GraphObject):
     __primarykey__ = "description"
@@ -107,7 +94,53 @@ class Domain(GraphObject):
     size = Property()
     categories = Property()
 
-    domain_alert = RelatedTo(Alert)
-    domain_brand = RelatedTo(Brand)
+    alert = RelatedFrom("Alert", "IN_DOMAIN")
 
-# print(Connection.get_connection().run("MATCH (a) RETURN a LIMIT 4").data())
+    brands = RelatedTo(Brand)
+
+class EntityCategories(GraphObject):
+    __primarykey__ = "name"
+    name=Property()
+
+    entity = RelatedFrom("Entity", "HAS_ENTITY_CATEGORIES")
+
+class EntityTypes(GraphObject):
+    __primarykey__ = "name"
+    name=Property()
+
+    entity = RelatedFrom("Entity", "HAS_ENTITY_TYPES")
+
+class Entity(GraphObject):
+    __primarykey__ = "title"
+    start=Property()
+    end=Property()
+    spot=Property()
+    confidence=Property()
+    title=Property()
+    uri=Property()
+    abstract=Property()
+    label=Property()
+
+    alerts = RelatedFrom("Alert", "HAS_ENTITY")
+
+    categories = RelatedTo(EntityCategories)
+    types = RelatedTo(EntityTypes)
+
+class Alert(GraphObject):
+    __primarykey__ = "title"
+    title = Property()
+    text = Property()
+    summary = Property()
+    url= Property()
+    has_entities=Property()
+
+    states = RelatedTo(State)
+    cities = RelatedTo(City)
+    symptoms = RelatedTo(Symptom)
+    diseases = RelatedTo(Disease)
+    domains = RelatedTo(Domain)
+    brands = RelatedTo(Brand)
+    keywords = RelatedTo(Keyword)
+    images = RelatedTo(Image)
+    dates = RelatedTo(Date)
+    entities = RelatedTo(Entity)

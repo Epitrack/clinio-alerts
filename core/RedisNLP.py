@@ -9,7 +9,7 @@ import ast
 class RedisNLP(object):
     _conn = {}
 
-    def __init__(self,key_diseases='diseases',key_state_cities='state_cities',key_symptoms='symptoms',
+    def __init__(self,key_diseases='diseases',key_state_cities='state_cities',key_symptoms='symptoms', api_key_dandelion='fa6b964b7746486bab94cc0e44cc1801',key_dandelion='key_dandelion',
                  file_symptoms='/data/sintomas.csv', file_state_cities='/data/estados_cidades.json', file_diseases='/data/doencas.txt',db=0):
 
         self.file_diseases=file_diseases
@@ -18,6 +18,8 @@ class RedisNLP(object):
         self.key_diseases=key_diseases
         self.key_symptoms=key_symptoms
         self.key_state_cities=key_state_cities
+        self.key_dandelion=key_dandelion
+        self.api_key_dandelion=api_key_dandelion
         self.db=db
         self.r = RedisNLP.conn(db)
 
@@ -26,7 +28,7 @@ class RedisNLP(object):
         try:
             c = RedisNLP._conn[db_]
         except:
-            RedisNLP._conn[db_]=redis.StrictRedis(host='redis', port=6379, db=db_)
+            RedisNLP._conn[db_]=redis.StrictRedis(host='localhost', port=6379, db=db_)
         return RedisNLP._conn[db_]
 
     def get_symptoms(self):
@@ -44,6 +46,15 @@ class RedisNLP(object):
             return symptoms
         else:
             return symptoms
+
+    def get_dandelion_key(self):
+        key_ = self.get_(self.key_dandelion)
+        if key_== None:
+            key_ = self.api_key_dandelion
+            self.save_(self.key_dandelion,key_)
+            return key_
+        else:
+            return key_
 
     def get_diseases(self):
         diseases = self.get_(self.key_diseases)

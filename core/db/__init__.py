@@ -1,4 +1,4 @@
-__all__ = ["Alert","Disease","Keyword","Symptom","State","City","Image","Date","Brand","Domain","Connection","Concordance"]
+__all__ = ["Alert","Disease","Keyword","Symptom","State","City","Image","Date","Brand","Domain","Connection","Concordance","Entity","EntityCategories","EntityTypes"]
 from .models import Alert
 from .models import Disease
 from .models import Keyword
@@ -11,3 +11,6 @@ from .models import Brand
 from .models import Domain
 from .models import Connection
 from .models import Concordance
+from .models import Entity
+from .models import EntityCategories
+from .models import EntityTypes
