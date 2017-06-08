@@ -22,7 +22,7 @@ def index():
 
 @app.route('/jobs/<string:id>')
 def job_status(id):
-    job = Job.fetch(id, c)
+    job = Job.fetch(id)
     if job.is_finished:
         return 'Job {} finalizado'.format(id)
     else:

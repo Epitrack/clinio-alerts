@@ -28,7 +28,7 @@ class RedisNLP(object):
         try:
             c = RedisNLP._conn[db_]
         except:
-            RedisNLP._conn[db_]=redis.StrictRedis(host='localhost', port=6379, db=db_)
+            RedisNLP._conn[db_]=redis.StrictRedis(host='redis', port=6379, db=db_)
         return RedisNLP._conn[db_]
 
     def get_symptoms(self):

@@ -3,3 +3,4 @@
 data/databases
 *.pyc*
 /__pycache__
+test/

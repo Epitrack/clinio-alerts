@@ -464,7 +464,8 @@ class InfoExtractor(object):
                     print('\nOK... %s\n'%(alert.title))
 
                     try:
-                        Connection.get_connection('http://localhost:7474/db/data').push(alert)
+                        # Connection.get_connection('http://localhost:7474/db/data').push(alert)
+                        Connection.get_connection().push(alert)
                     except ValueError as e:
                         print("ERRO : %s"%(str(e)))
 
