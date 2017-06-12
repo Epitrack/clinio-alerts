@@ -19,9 +19,35 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "assets/css/bootstrap.min.css",
+        "assets/css/material-dashboard.css",
+        "assets/css/demo.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "assets/js/jquery-3.1.1.min.js",
+        "assets/js/jquery-ui.min.js",
+        "assets/js/bootstrap.min.js",
+        "assets/js/material.min.js",
+        "assets/js/perfect-scrollbar.jquery.min.js",
+        "assets/js/jquery.validate.min.js",
+        "assets/js/moment.min.js",
+        "assets/js/jquery.bootstrap-wizard.js",
+        "../node_modules/chartist/dist/chartist.js",
+        "assets/js/bootstrap-notify.js",
+        "assets/js/jquery.sharrre.js",
+        "assets/js/bootstrap-datetimepicker.js",
+        "assets/js/jquery-jvectormap.js",
+        "assets/js/nouislider.min.js",
+        "assets/js/jquery.select-bootstrap.js",
+        "assets/js/jquery.datatables.js",
+        "assets/js/sweetalert2.js",
+        "assets/js/jasny-bootstrap.min.js",
+        "assets/js/fullcalendar.min.js",
+        "assets/js/jquery.tagsinput.js",
+        "assets/js/material-dashboard.js",
+        "assets/js/demo.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
