@@ -78,6 +78,7 @@ class Date(GraphObject):
     mes = Property()
     diames = Property()
     ano = Property()
+    week = Property()
 
     alert = RelatedFrom("Alert", "IN_DATE")
 

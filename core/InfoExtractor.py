@@ -394,6 +394,10 @@ class InfoExtractor(object):
                     date.ano = d[0]
                     date.mes = d[1]
                     date.dia = d[2]
+                    try:
+                        date.week =self.info['article']['publish_date'].isocalendar()[1]
+                    except:
+                        date.week=-1
                     #
                     alert = Alert()
                     alert.url=self.URL
