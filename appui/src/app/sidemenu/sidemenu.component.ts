@@ -12,4 +12,9 @@ export class SidemenuComponent implements OnInit {
   ngOnInit() {
   }
 
+  logout() {
+    window.localStorage.removeItem('currentUser');
+    location.reload();
+  }
+
 }

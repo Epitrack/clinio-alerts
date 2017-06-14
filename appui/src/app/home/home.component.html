@@ -261,8 +261,98 @@
                     </div>
                   </div>
                   <div class="col-md-6 col-md-offset-1">
-                    <div id="worldMap" class="map"></div>
+                    <div class="table-responsive table-sales">
+                      <table class="table">
+                        <tbody>
+                        <tr>
+                          <td>
+                            <div class="flag">
+                              <img src="assets/img/flags/US.png">
+                            </div>
+                          </td>
+                          <td>USA</td>
+                          <td class="text-right">
+                            2.920
+                          </td>
+                          <td class="text-right">
+                            53.23%
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="flag">
+                              <img src="assets/img/flags/DE.png">
+                            </div>
+                          </td>
+                          <td>Germany</td>
+                          <td class="text-right">
+                            1.300
+                          </td>
+                          <td class="text-right">
+                            20.43%
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="flag">
+                              <img src="assets/img/flags/AU.png">
+                            </div>
+                          </td>
+                          <td>Australia</td>
+                          <td class="text-right">
+                            760
+                          </td>
+                          <td class="text-right">
+                            10.35%
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="flag">
+                              <img src="assets/img/flags/GB.png">
+                            </div>
+                          </td>
+                          <td>United Kingdom</td>
+                          <td class="text-right">
+                            690
+                          </td>
+                          <td class="text-right">
+                            7.87%
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="flag">
+                              <img src="assets/img/flags/RO.png">
+                            </div>
+                          </td>
+                          <td>Romania</td>
+                          <td class="text-right">
+                            600
+                          </td>
+                          <td class="text-right">
+                            5.94%
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="flag">
+                              <img src="assets/img/flags/BR.png">
+                            </div>
+                          </td>
+                          <td>Brasil</td>
+                          <td class="text-right">
+                            550
+                          </td>
+                          <td class="text-right">
+                            4.34%
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -425,50 +515,14 @@
         </div>
       </div>
     </div>
-    <footer class="footer">
-      <div class="container-fluid">
-        <nav class="pull-left">
-          <ul>
-            <li>
-              <a href="#">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                Company
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                Portfolio
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                Blog
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <p class="copyright pull-right">
-          &copy;
-          <script>
-            document.write(new Date().getFullYear())
-          </script>
-          <a href="http://www.creative-tim.com/">Creative Tim</a>, made with love for a better web
-        </p>
-      </div>
-    </footer>
+    <app-footer></app-footer>
   </div>
 </div>
 
 <script type="text/javascript">
   $(document).ready(function() {
-
     // Javascript method's body can be found in assets/js/demos.js
     demo.initDashboardPageCharts();
-
     demo.initVectorMap();
   });
 </script>

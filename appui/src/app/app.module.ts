@@ -25,6 +25,7 @@ import { FixedpluginComponent } from './fixedplugin/fixedplugin.component';
 import { UtilComponent } from './util/util.component';
 
 import { AgmCoreModule } from '@agm/core';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { AgmCoreModule } from '@agm/core';
     TopbarComponent,
     FixedpluginComponent,
     UtilComponent,
+    FooterComponent,
     // SweetAlertService
   ],
   imports: [

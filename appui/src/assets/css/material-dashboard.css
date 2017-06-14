@@ -5562,14 +5562,14 @@ h2.title {
 }
 .sidebar .logo .simple-text,
 .off-canvas-sidebar .logo .simple-text {
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   padding: 5px 0px;
   display: block;
   font-size: 18px;
   color: #3C4858;
   text-align: center;
   white-space: nowrap;
-  font-weight: 400;
+  /*font-weight: 400;*/
   line-height: 30px;
   overflow: hidden;
 }
