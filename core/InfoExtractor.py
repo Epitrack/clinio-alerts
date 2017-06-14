@@ -122,7 +122,8 @@ class InfoExtractor(object):
         d=self.object_date['data']
         try:
             if len(datas)>0:
-                d = (dateutil.parser.parse(str(datas[0]).strip()))
+                info = dateutil.parser.parserinfo(dayfirst=True)
+                d = (dateutil.parser.parse(str(datas[0]).strip(),info))
         except Exception as err:
             print(err)
 
